@@ -22,4 +22,4 @@ VOLUME ["/exports"]
 EXPOSE 111/tcp 111/udp 2049/tcp 2049/udp 20048/tcp
 
 ENTRYPOINT ["/usr/local/bin/run_nfs.sh"]
-CMD ["/exports/jenkins-data"]
+CMD ["/exports/data-0", "/exports/data-1", "/exports/data-2", "/exports/data-3", "/exports/data-4", "/exports/data-5", "/exports/data-6", "/exports/data-7", "/exports/data-8", "/exports/data-9"]
