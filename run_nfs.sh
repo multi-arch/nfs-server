@@ -30,7 +30,6 @@ function start()
     for i in "$@"; do
         mkdir -p $i
         chmod 777 $i
-        chown nobody:nobody $i
         # fsid=0: needed for NFSv4
         echo "$i *(rw,no_root_squash,sync,no_subtree_check)" >> /etc/exports
         if [ -v gid ] ; then
@@ -38,6 +37,9 @@ function start()
             chgrp $gid $i
         fi
     done
+
+    echo "List of the export mount dirs:"
+    ls -la /exports
 
     # start rpcbind if it is not started yet
     /usr/sbin/rpcinfo 127.0.0.1 > /dev/null; s=$?
