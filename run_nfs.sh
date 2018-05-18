@@ -31,7 +31,8 @@ function start()
         mkdir -p $i
         chmod 777 $i
         # fsid=0: needed for NFSv4
-        echo "$i *(rw,no_root_squash,sync,no_subtree_check)" >> /etc/exports
+	fid=`echo $i | cut -f2 -d"-"` 
+        echo "$i *(rw,no_root_squash,sync,no_subtree_check,fsid=$fid)" >> /etc/exports
         if [ -v gid ] ; then
             chmod 070 $i
             chgrp $gid $i
@@ -40,6 +41,8 @@ function start()
 
     echo "List of the export mount dirs:"
     ls -la /exports
+    df -m
+    cat /etc/exports
 
     # start rpcbind if it is not started yet
     /usr/sbin/rpcinfo 127.0.0.1 > /dev/null; s=$?
