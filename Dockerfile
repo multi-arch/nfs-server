@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM k8s.gcr.io/volume-nfs:0.8
+FROM k8s.gcr.io/e2e-test-images/volume/nfs:1.3
 ADD run_nfs.sh /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/run_nfs.sh"]
