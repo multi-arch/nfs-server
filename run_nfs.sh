@@ -22,9 +22,10 @@ function start()
     while getopts "G:" opt; do
         case ${opt} in
             G) gid=${OPTARG};;
+            *):;;
         esac
     done
-    shift $(($OPTIND - 1))
+    shift $((OPTIND - 1))
 
     # prepare /etc/exports
     for i in "$@"; do
@@ -34,8 +35,8 @@ function start()
 	fid=`echo $i | cut -f2 -d"-"` 
         echo "$i *(rw,no_root_squash,sync,no_subtree_check,fsid=$fid)" >> /etc/exports
         if [ -v gid ] ; then
-            chmod 070 $i
-            chgrp $gid $i
+            chmod 070 "$i"
+            chgrp "$gid" "$i"
         fi
     done
 
@@ -51,7 +52,7 @@ function start()
        /usr/sbin/rpcbind -w
     fi
 
-    mount -t nfsd nfds /proc/fs/nfsd
+    mount -t nfsd nfsd /proc/fs/nfsd
 
     # -V 3: enable NFSv3
     /usr/sbin/rpc.mountd -N 2 -V 3
@@ -71,7 +72,7 @@ function stop()
     /usr/sbin/exportfs -au
     /usr/sbin/exportfs -f
 
-    kill $( pidof rpc.mountd )
+    kill "$( pidof rpc.mountd )"
     umount /proc/fs/nfsd
     echo > /etc/exports
     exit 0
